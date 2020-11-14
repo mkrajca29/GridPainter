@@ -7,216 +7,15 @@
     ></canvas>
     <br />
 
-    <table
-      class="table mx-auto"
-      :style="{ maxWidth: canvas.canvasWidth + 'px' }"
-    >
-      <thead>
-        <tr>
-          <th v-if="drawing" scope="col">
-            <button class="btn btn-dark mx-1">← ↕ →</button>MOVE
-            <button @click="add()" class="btn btn-dark">Shift</button> ADD
-            <button
-              v-if="restore.length > 18 && deleted"
-              @click="restoreCoords()"
-              class="btn btn-success"
-            >
-              BACK
-            </button>
-          </th>
-          <th v-if="rectangles.length > 0 && drawing" scope="col">
-            <button @click="removeRectangle()" class="btn btn-dark">R</button>
-            REMOVE
-          </th>
-          <th v-if="rectangles.length > 0 && drawing" scope="col">
-            <button
-              @click="
-                restore = exportCoords;
-                deleted = true;
-                deleteAll();
-              "
-              class="btn btn-dark"
-            >
-              D
-            </button>
-            DELETE ALL
-          </th>
-          <th v-if="rectangles.length > 0 && drawing" scope="col">
-            <button @click="play()" class="btn btn-dark">P</button> PLAY
-          </th>
-          <th v-if="drawing == false" scope="col">
-            <button @click="edit()" class="btn btn-dark">E</button> EDIT
-          </th>
-        </tr>
-      </thead>
-    </table>
-
-    <button
-      @click="showCanvasSetings = !showCanvasSetings"
-      class="btn btn-dark m-1 outer-btn"
-    >
-      CANVAS SETTINGS
-    </button>
-    <div v-if="showCanvasSetings" class="btn-container">
-      WIDTH:
-      <button
-        @click="editCanvasSize('shrinkW')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.canvasWidth"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editCanvasSize('magnifyW')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
-    </div>
-
-    <div v-if="showCanvasSetings" class="btn-container">
-      <span style="color: #ffffff">HEIGHT:</span>
-      <button
-        @click="editCanvasSize('shrinkH')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.canvasHeight"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editCanvasSize('magnifyH')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
-    </div>
-
-    <div v-if="showCanvasSetings" class="btn-container btn-end">
-      TILE:
-      <button
-        @click="editTileSize('shrink')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.tileSize"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editTileSize('magnify')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
-    </div>
-
-    <div class="d-inline-block">
-      <button
-        @click="showColors = !showColors"
-        class="btn btn-dark m-1 outer-btn"
-      >
-        CHANGE COLOR
-      </button>
-      <div v-if="showColors" class="btn-container btn-end">
-        <button
-          @click="changeColor('#F24405')"
-          class="btn mx-1 inner-btn btn-color"
-          style="background: #F24405;"
-        ></button>
-        <button
-          @click="changeColor('#F29F05')"
-          class="btn mx-1 inner-btn btn-color"
-          style="background: #F29F05;"
-        ></button>
-        <button
-          @click="changeColor('#524EBF')"
-          class="btn mx-1 inner-btn btn-color"
-          style="background: #524EBF;"
-        ></button>
-        <button
-          @click="changeColor('#A094F2')"
-          class="btn mx-1 inner-btn btn-color"
-          style="background: #A094F2;"
-        ></button>
-        <button
-          @click="changeColor('#F22E62')"
-          class="btn mx-1 inner-btn btn-color"
-          style="background: #F22E62;"
-        ></button>
-
-        <form
-          class="d-inline"
-          pattern="[a-fA-F\d]+"
-          @submit.prevent="changeColor(hex)"
-        >
-          <input
-            class="input-sizeing"
-            v-model="hex"
-            type="text"
-            placeholder="#HEX"
-          />
-        </form>
-      </div>
-    </div>
-
-    <div>
-      <button
-        @click="insertForm = !insertForm"
-        class="btn btn-dark m-1 outer-btn"
-      >
-        INSERT COORDINATES
-      </button>
-      <div v-if="insertForm" class="btn-container btn-end">
-        <form class="d-inline" @submit.prevent="importCoords(inputData)">
-          <input
-            v-model="inputData"
-            type="text"
-            placeholder="Inser here"
-            class="input-coords "
-          />
-
-          <button class="btn btn-dark ml-2 btn-insert">INSERT</button>
-        </form>
-      </div>
-      <button
-        class="btn btn-danger mx-2 "
-        v-if="rectangles.length > 0"
-        v-clipboard="exportCoords"
-      >
-        COPY OUTPUT
-      </button>
-    </div>
-
-    <textarea
+    <!--     <textarea
       disabled
       @change="console.log('zmena')"
       v-model="exportCoords"
       cols="30"
       rows="2"
       :style="{ width: canvas.canvasWidth + 'px' }"
-    ></textarea>
+    ></textarea> -->
+    <button @click="play()">PLAY</button>
     <br />
   </div>
 </template>
@@ -260,13 +59,6 @@ export default {
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
-    window.addEventListener(
-      "beforeunload",
-      () => {
-        this.setItemToStorage(this.exportCoords);
-      },
-      false
-    );
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -277,14 +69,11 @@ export default {
     this.updateCanvasSize();
 
     let initialCoords = localStorage.getItem("Output");
-    if (initialCoords.length > 18) {
+    if (initialCoords.length > 12) {
       this.importCoords(initialCoords);
     }
 
-    if (this.drawing) {
-      this.draw();
-      this.moveMainRectangle();
-    }
+    this.play();
   },
   computed: {
     exportCoords: function() {
@@ -404,7 +193,7 @@ export default {
       this.mainRectangle.x = setCoords[0];
       this.mainRectangle.y = setCoords[1];
 
-      this.drawMainRectangle();
+      /* this.drawMainRectangle(); */
     },
     async editCanvasSize(action) {
       if (action == "magnifyW") {
@@ -506,7 +295,7 @@ export default {
     },
     draw() {
       this.drawGrid();
-      this.drawMainRectangle();
+      /* this.drawMainRectangle(); */
       this.drawAllRectangles();
     },
     drawGrid() {
@@ -522,7 +311,7 @@ export default {
         }
       }
     },
-    drawMainRectangle() {
+    /*     drawMainRectangle() {
       this.rectangle(
         this.mainRectangle.color,
         this.mainRectangle.x,
@@ -530,7 +319,7 @@ export default {
         this.canvas.tileSize - 1,
         this.canvas.tileSize - 1
       );
-    },
+    }, */
     getCoords() {
       let coords = this.rectangles.find(
         element =>
@@ -556,7 +345,7 @@ export default {
         }
       }
     },
-    moveMainRectangle() {
+    /* moveMainRectangle() {
       window.addEventListener("keydown", e => {
         switch (e.key) {
           case "ArrowUp":
@@ -604,7 +393,6 @@ export default {
             this.add();
             this.deleted = false;
             this.copyText = "COPY OUTPUT";
-            /* this.setItemToStorage(this.exportCoords); */
             break;
         }
 
@@ -629,8 +417,8 @@ export default {
           this.draw();
         }
       });
-    },
-    checkDistanceLimits() {
+    }, */
+    /*     checkDistanceLimits() {
       let distanceX = this.canvas.tileSize * (this.canvas.numberOfTilesX - 1);
       let distanceY = this.canvas.tileSize * (this.canvas.numberOfTilesY - 1);
 
@@ -646,7 +434,7 @@ export default {
       if (this.mainRectangle.y > distanceY) {
         this.mainRectangle.y = 0;
       }
-    },
+    }, */
     drawAllRectangles() {
       this.rectangles.forEach(eachRect => {
         this.rectangle(
@@ -674,8 +462,8 @@ export default {
           );
         }, this.drawingSpeed * index);
       }
-    },
-    edit() {
+    }
+    /*     edit() {
       this.drawing = true;
       this.draw();
     },
@@ -689,7 +477,7 @@ export default {
     },
     setItemToStorage(value) {
       localStorage.setItem("Output", value);
-    }
+    } */
   }
 };
 </script>

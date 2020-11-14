@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <div id="nav"><router-link to="/">GRID PAINTER</router-link></div>
+    <div id="nav">
+      <router-link to="/">GRID PAINTER</router-link> |
+      <router-link to="/output">OUTPUT</router-link>
+    </div>
     <router-view />
   </div>
 </template>
@@ -21,10 +24,13 @@
 
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: #adb6c0;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: white;
+    }
+    &:hover {
+      text-decoration: none;
     }
   }
 }
