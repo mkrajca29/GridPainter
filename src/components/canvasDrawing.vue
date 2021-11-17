@@ -6,7 +6,6 @@
       :height="canvas.canvasHeight"
     ></canvas>
     <br />
-
     <table
       class="table mx-auto"
       :style="{ maxWidth: canvas.canvasWidth + 'px' }"
@@ -51,88 +50,138 @@
       </thead>
     </table>
 
-    <button
-      @click="showCanvasSetings = !showCanvasSetings"
-      class="btn btn-dark m-1 outer-btn"
-    >
-      CANVAS SETTINGS
-    </button>
-    <div v-if="showCanvasSetings" class="btn-container">
-      WIDTH:
-      <button
-        @click="editCanvasSize('shrinkW')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.canvasWidth"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editCanvasSize('magnifyW')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
+    <div class="container mb-3">
+      <div class="row">
+        <div class="col-2 d-flex justify-content-center align-items-center">
+          <color-picker
+            v-model="colorPick"
+            @input="onColorSelect"
+            :step="1"
+          ></color-picker>
+        </div>
+
+        <div class="col">
+          <div class="row">
+            <div>
+              <button
+                @click="showCanvasSetings = !showCanvasSetings"
+                class="btn btn-dark m-1 outer-btn"
+              >
+                CANVAS SETTINGS
+              </button>
+              <div v-if="showCanvasSetings" class="btn-container">
+                WIDTH:
+                <button
+                  @click="editCanvasSize('shrinkW')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  -
+                </button>
+                <form class="d-inline">
+                  <input
+                    v-model="canvas.canvasWidth"
+                    class="input-sizeing"
+                    type="text"
+                    style="width: 3em"
+                    disabled
+                  />
+                </form>
+                <button
+                  @click="editCanvasSize('magnifyW')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  +
+                </button>
+              </div>
+
+              <div v-if="showCanvasSetings" class="btn-container">
+                <span style="color: #ffffff">HEIGHT:</span>
+                <button
+                  @click="editCanvasSize('shrinkH')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  -
+                </button>
+                <form class="d-inline">
+                  <input
+                    v-model="canvas.canvasHeight"
+                    class="input-sizeing"
+                    type="text"
+                    style="width: 3em"
+                    disabled
+                  />
+                </form>
+                <button
+                  @click="editCanvasSize('magnifyH')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  +
+                </button>
+              </div>
+
+              <div v-if="showCanvasSetings" class="btn-container btn-end">
+                TILE:
+                <button
+                  @click="editTileSize('shrink')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  -
+                </button>
+                <form class="d-inline">
+                  <input
+                    v-model="canvas.tileSize"
+                    class="input-sizeing"
+                    type="text"
+                    style="width: 3em"
+                    disabled
+                  />
+                </form>
+                <button
+                  @click="editTileSize('magnify')"
+                  class="btn btn-dark mx-2 inner-btn"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <button
+                @click="insertForm = !insertForm"
+                class="btn btn-dark m-1 outer-btn"
+              >
+                INSERT COORDINATES
+              </button>
+              <div v-if="insertForm" class="btn-container btn-end">
+                <form
+                  class="d-inline"
+                  @submit.prevent="importCoords(inputData)"
+                >
+                  <input
+                    v-model="inputData"
+                    type="text"
+                    placeholder="Inser here"
+                    class="input-coords "
+                  />
+
+                  <button class="btn btn-dark ml-2 btn-insert">INSERT</button>
+                </form>
+              </div>
+              <button
+                class="btn btn-danger mx-2 "
+                v-if="rectangles.length > 0"
+                v-clipboard="exportCoords"
+              >
+                COPY OUTPUT
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div v-if="showCanvasSetings" class="btn-container">
-      <span style="color: #ffffff">HEIGHT:</span>
-      <button
-        @click="editCanvasSize('shrinkH')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.canvasHeight"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editCanvasSize('magnifyH')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
-    </div>
-
-    <div v-if="showCanvasSetings" class="btn-container btn-end">
-      TILE:
-      <button
-        @click="editTileSize('shrink')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        -
-      </button>
-      <form class="d-inline">
-        <input
-          v-model="canvas.tileSize"
-          class="input-sizeing"
-          type="text"
-          style="width: 3em"
-          disabled
-        />
-      </form>
-      <button
-        @click="editTileSize('magnify')"
-        class="btn btn-dark mx-2 inner-btn"
-      >
-        +
-      </button>
-    </div>
-
-    <div class="d-inline-block">
+    <!--     <div class="d-inline-block">
       <button
         @click="showColors = !showColors"
         class="btn btn-dark m-1 outer-btn"
@@ -165,8 +214,9 @@
           class="btn mx-1 inner-btn btn-color"
           style="background: #F22E62;"
         ></button>
+        <color-picker v-model="colorPick" @input="onColorSelect"></color-picker>
 
-        <form
+                <form
           class="d-inline"
           pattern="[a-fA-F\d]+"
           @submit.prevent="changeColor(hex)"
@@ -177,37 +227,9 @@
             type="text"
             placeholder="#HEX"
           />
-        </form>
+        </form> 
       </div>
-    </div>
-
-    <div>
-      <button
-        @click="insertForm = !insertForm"
-        class="btn btn-dark m-1 outer-btn"
-      >
-        INSERT COORDINATES
-      </button>
-      <div v-if="insertForm" class="btn-container btn-end">
-        <form class="d-inline" @submit.prevent="importCoords(inputData)">
-          <input
-            v-model="inputData"
-            type="text"
-            placeholder="Inser here"
-            class="input-coords "
-          />
-
-          <button class="btn btn-dark ml-2 btn-insert">INSERT</button>
-        </form>
-      </div>
-      <button
-        class="btn btn-danger mx-2 "
-        v-if="rectangles.length > 0"
-        v-clipboard="exportCoords"
-      >
-        COPY OUTPUT
-      </button>
-    </div>
+    </div> -->
 
     <textarea
       disabled
@@ -223,7 +245,9 @@
 
 <script>
 /* import _ from "lodash-es"; */
+import ColorPicker from "@radial-color-picker/vue-color-picker";
 export default {
+  components: { ColorPicker },
   data() {
     return {
       window: {
@@ -243,6 +267,12 @@ export default {
         y: 0,
         color: "#F24405" //
       },
+      colorPick: {
+        hue: 50,
+        saturation: 100,
+        luminosity: 50,
+        alpha: 1
+      },
       rectangles: [],
 
       drawing: true,
@@ -251,7 +281,6 @@ export default {
       showCanvasSetings: false,
       deleted: false,
       inputData: "",
-      hex: "",
       infoBox: true,
       restore: "",
       drawingSpeed: 10
@@ -293,10 +322,45 @@ export default {
         .join("");
       let outputCoords = coords.slice(0, -1);
       let outputSettings = `${this.canvas.canvasWidth}:${this.canvas.canvasHeight}:${this.canvas.tileSize}/`;
+
       return outputSettings + outputCoords;
     }
   },
   methods: {
+    onColorSelect() {
+      //this.mainRectangle.color = `hsl(${this.colorPick}, 100%, 50%)`;
+      this.mainRectangle.color = this.hslToHex(this.colorPick, 100, 50);
+      this.draw();
+      this.tabindex = 1;
+    },
+    hslToHex(h, s, l) {
+      h /= 360;
+      s /= 100;
+      l /= 100;
+      let r, g, b;
+      if (s === 0) {
+        r = g = b = l; // achromatic
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1 / 6) return p + (q - p) * 6 * t;
+          if (t < 1 / 2) return q;
+          if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1 / 3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1 / 3);
+      }
+      const toHex = x => {
+        const hex = Math.round(x * 255).toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      };
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    },
     handleResize() {
       this.window.width = document.body.clientWidth;
       this.window.height = document.body.clientHeight;
@@ -354,6 +418,7 @@ export default {
       this.placeToLocation(data);
       this.rectangles = this.processData(data).coords;
       this.drawAllRectangles();
+      this.deleted = false;
     },
     processData(data) {
       let allInput = data.split("/"); // => [SettingsArray] a [CoordsArray]
@@ -362,9 +427,12 @@ export default {
 
       let CoordsArraySplit = CoordsArray.map(a => a.split(","));
       let coords = [];
-      CoordsArraySplit.map(
-        a => coords.push({ x: Number(a[0]), y: Number(a[1]), color: a[2] }) //
-      );
+
+      if (allInput[1].length > 3) {
+        CoordsArraySplit.map(
+          a => coords.push({ x: Number(a[0]), y: Number(a[1]), color: a[2] }) //
+        );
+      }
 
       return {
         SettingsArray,
@@ -379,24 +447,27 @@ export default {
 
       let setCoords = [];
 
-      //smernice X
+      if (lastElementOfArray) {
+        //smernice X
+        if (lastElementOfArray.x - penultimateElementOfArray.x > 0) {
+          setCoords[0] = lastElementOfArray.x + this.canvas.tileSize;
+        } else if (lastElementOfArray.x - penultimateElementOfArray.x < 0) {
+          setCoords[0] = lastElementOfArray.x - this.canvas.tileSize;
+        } else if (lastElementOfArray.x - penultimateElementOfArray.x == 0) {
+          setCoords[0] = lastElementOfArray.x;
+        }
 
-      if (lastElementOfArray.x - penultimateElementOfArray.x > 0) {
-        setCoords[0] = lastElementOfArray.x + this.canvas.tileSize;
-      } else if (lastElementOfArray.x - penultimateElementOfArray.x < 0) {
-        setCoords[0] = lastElementOfArray.x - this.canvas.tileSize;
-      } else if (lastElementOfArray.x - penultimateElementOfArray.x == 0) {
-        setCoords[0] = lastElementOfArray.x;
-      }
-
-      //smernice Y
-
-      if (lastElementOfArray.y - penultimateElementOfArray.y > 0) {
-        setCoords[1] = lastElementOfArray.y + this.canvas.tileSize;
-      } else if (lastElementOfArray.y - penultimateElementOfArray.y < 0) {
-        setCoords[1] = lastElementOfArray.y - this.canvas.tileSize;
-      } else if (lastElementOfArray.y - penultimateElementOfArray.y == 0) {
-        setCoords[1] = lastElementOfArray.y;
+        //smernice Y
+        if (lastElementOfArray.y - penultimateElementOfArray.y > 0) {
+          setCoords[1] = lastElementOfArray.y + this.canvas.tileSize;
+        } else if (lastElementOfArray.y - penultimateElementOfArray.y < 0) {
+          setCoords[1] = lastElementOfArray.y - this.canvas.tileSize;
+        } else if (lastElementOfArray.y - penultimateElementOfArray.y == 0) {
+          setCoords[1] = lastElementOfArray.y;
+        }
+      } else {
+        setCoords[0] = 0;
+        setCoords[1] = 0;
       }
 
       /* console.log(setCoords); */

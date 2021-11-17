@@ -9,6 +9,7 @@
 </template>
 
 <style lang="scss">
+@import "~@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css";
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,8 +21,6 @@
 }
 
 #nav {
-  padding: 30px;
-
   a {
     font-weight: bold;
     color: #adb6c0;
