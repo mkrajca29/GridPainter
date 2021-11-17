@@ -52,7 +52,7 @@
 
     <div class="container mb-3">
       <div class="row">
-        <div class="col-2 d-flex justify-content-center align-items-center">
+        <div class="col-4 d-flex justify-content-center align-items-center">
           <color-picker
             v-model="colorPick"
             @input="onColorSelect"
