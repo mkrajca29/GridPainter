@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">GRID PAINTER</router-link> |
-      <router-link to="/output">OUTPUT</router-link>
+    <div id="nav" class="py-2">
+      <router-link to="/">GRID PAINTER</router-link>
+      <!-- <router-link to="/output">OUTPUT</router-link> -->
     </div>
     <router-view />
   </div>
