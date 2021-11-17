@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
+    "scroll-out": "^2.2.12",
     "vue": "^2.6.11"
   },
   "devDependencies": {
